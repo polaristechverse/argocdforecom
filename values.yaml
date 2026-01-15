@@ -1,0 +1,41 @@
+microservices:
+  - name: product
+    image: chaitanyamanikumar/products:v1
+    app: javaproduct
+    replicas: 2
+    port: 8081
+    protocol: TCP
+    type: ClusterIP
+  - name: inventory
+    image: chaitanyamanikumar/inventory:v1
+    app: javainventory
+    replicas: 2
+    port: 8082
+    type: ClusterIP
+  - name: payment
+    image: chaitanyamanikumar/payment:v1
+    app: javapayment
+    replicas: 2
+    port: 8083
+    type: ClusterIP
+  - name: frontend
+    image: chaitanyamanikumar/frontend:v1
+    app: frontend
+    replicas: 2
+    port: 80
+    nodePort: 31234
+    type: NodePort
+    initContainers:
+      - name: wait-for-product
+        image: yauritux/busybox-curl
+        command:
+          - sh
+          - -c
+          - |
+            echo "=========================================="
+            echo "Step 1: Checking if product server is reachable..."
+            echo "=========================================="
+            until curl -sf http://product:8081/products; 
+            do echo "product server is not ready yet - waiting 3 seconds..."
+            sleep 3
+            done            

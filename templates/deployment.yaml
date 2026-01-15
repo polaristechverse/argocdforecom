@@ -1,0 +1,37 @@
+{{- range .Values.microservices }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .name }}
+  labels:
+    app: {{ .app }}
+spec:
+  replicas: {{ .replicas }}
+  selector:
+    matchLabels:
+      app: {{ .app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .app }}
+    spec:
+{{- if .initContainers }}
+      initContainers:
+{{- range .initContainers }}
+        - name: {{ .name }}
+          image: {{ .image }}
+          command:
+{{ toYaml .command | nindent 12 }}
+{{- end }}
+{{- end }}
+      containers:
+        - name: {{ .name }}
+          image: {{ .image }}
+        resource:
+          requests:
+            cpu: "25m"
+          limits:
+            cpu: "250m"
+
+{{- end }}
