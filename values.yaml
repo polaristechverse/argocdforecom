@@ -2,20 +2,20 @@ microservices:
   - name: product
     image: chaitanyamanikumar/products:v1
     app: javaproduct
-    replicas: 2
+    replicas: 3
     port: 8081
     protocol: TCP
     type: ClusterIP
   - name: inventory
     image: chaitanyamanikumar/inventory:v1
     app: javainventory
-    replicas: 2
+    replicas: 3
     port: 8082
     type: ClusterIP
   - name: payment
     image: chaitanyamanikumar/payment:v1
     app: javapayment
-    replicas: 2
+    replicas: 3
     port: 8083
     type: ClusterIP
   - name: frontend
