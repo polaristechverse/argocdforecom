@@ -28,10 +28,4 @@ spec:
       containers:
         - name: {{ .name }}
           image: {{ .image }}
-        resource:
-          requests:
-            cpu: "25m"
-          limits:
-            cpu: "250m"
-
 {{- end }}
